@@ -44,7 +44,7 @@ function App() {
               </Link>
             ))}
           </nav>
-          <div className="col-span-3 p-6 bg-white overflow-hidden">
+          <div className="col-span-3 bg-white overflow-hidden">
             <Routes>
               {routes.map((route) => (
                 <Route path={route.url} element={route.component} />
