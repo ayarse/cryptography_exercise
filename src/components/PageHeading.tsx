@@ -1,3 +1,7 @@
+/**
+ * Ayas Nasih - S1600655
+ * Villa College - BSCHCS (Jan 2020)
+ */
 import React from "react";
 
 const PageHeading: React.FC<{ title: string }> = ({ title }) => {

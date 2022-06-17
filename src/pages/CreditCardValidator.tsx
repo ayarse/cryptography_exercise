@@ -1,3 +1,7 @@
+/**
+ * Ayas Nasih - S1600655
+ * Villa College - BSCHCS (Jan 2020)
+ */
 import { CreditCardIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import PageHeading from "../components/PageHeading";

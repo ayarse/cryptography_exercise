@@ -1,3 +1,9 @@
+/**
+ * Ayas Nasih - S1600655
+ * Villa College - BSCHCS (Jan 2020)
+ */
+import React from "react";
+
 export default function Header(): JSX.Element {
   return (
     <div className="mb-6 bg-indigo-200/50 p-4 rounded-lg">
