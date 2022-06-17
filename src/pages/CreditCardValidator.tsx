@@ -31,6 +31,8 @@ export const CreditCardValidator = () => {
           type="text"
           defaultValue={ccNo}
           value={ccNo}
+          maxLength={16}
+          minLength={16}
           className="text-base appearance-none rounded bg-white inner-shadow border border-gray-400 py-2 px-4 w-full"
         />
         <div className="p-4 text-center">
