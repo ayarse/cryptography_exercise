@@ -40,6 +40,7 @@ function App() {
             <Header />
             {routes.map((route) => (
               <Link
+                key={route.url}
                 className=" px-4 mb-2 py-2 rounded-md transition-all hover:bg-white hover:scale-105 text-indigo-900 hover:text-indigo-900"
                 to={route.url}
               >
@@ -51,7 +52,11 @@ function App() {
           <div className="col-span-3 bg-white overflow-hidden">
             <Routes>
               {routes.map((route) => (
-                <Route path={route.url} element={route.component} />
+                <Route
+                  key={route.url}
+                  path={route.url}
+                  element={route.component}
+                />
               ))}
             </Routes>
           </div>
