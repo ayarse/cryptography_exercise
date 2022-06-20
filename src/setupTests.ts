@@ -1,5 +1,7 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
+/**
+ * Ayas Nasih - S1600655
+ * Villa College - BSCHCS (Jan 2020)
+ */
+
 import '@testing-library/jest-dom/extend-expect';
+import * as CreditCardValidatorTest from './tests/CreditCardValidator.test'
