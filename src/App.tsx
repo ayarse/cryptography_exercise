@@ -3,7 +3,7 @@
  * Villa College - BSCHCS (Jan 2020)
  */
 import React from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import PasswordCracker from "./pages/PasswordCracker";
 import { CreditCardValidator } from "./pages/CreditCardValidator";
@@ -39,14 +39,19 @@ function App() {
           <nav className="col-span-1 flex flex-col bg-indigo-100 p-4">
             <Header />
             {routes.map((route) => (
-              <Link
+              <NavLink
                 key={route.url}
-                className=" px-4 mb-2 py-2 rounded-md transition-all hover:bg-white hover:scale-105 text-indigo-900 hover:text-indigo-900"
+                className={({ isActive }: { isActive: boolean }) => {
+                  let base =
+                    "px-4 mb-2 py-2 rounded-md transition-all hover:bg-white hover:scale-105 text-indigo-900 hover:text-indigo-900 ";
+                  if (isActive) base += "bg-white";
+                  return base;
+                }}
                 to={route.url}
               >
                 {route.icon}
                 {route.title}
-              </Link>
+              </NavLink>
             ))}
           </nav>
           <div className="col-span-3 bg-white overflow-hidden">
