@@ -4,7 +4,7 @@
  */
 
 export enum HammingValidationErrors {
-    INVALID_BINARY_STRING = 'Please enter a valid binary string consisting of 0s and 1s only.',
+    INVALID_BINARY_STRING = 'Please enter a valid 7 bit binary string consisting of 0s and 1s only.',
     INVALID_LENGTH = 'This app currently only supports 7 bit binary strings.',
     EMPTY = ""
 }
