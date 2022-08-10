@@ -3,8 +3,14 @@
  * Villa College - BSCHCS (Jan 2020)
  */
 
+export enum HammingValidationErrors {
+    INVALID_BINARY_STRING = 'Please enter a valid binary string consisting of 0s and 1s only.',
+    INVALID_LENGTH = 'This app currently only supports 7 bit binary strings.',
+    EMPTY = ""
+}
+
 export interface HammingValidationResult {
-    error: string,
+    error: HammingValidationErrors,
     errorPosition: string,
     correctCode: string,
     valid: boolean
@@ -18,7 +24,7 @@ export enum ParityType {
 export const validateHamming = (binaryString: string, type: ParityType = ParityType.EVEN): HammingValidationResult => {
 
     const retVal = {
-        error: "",
+        error: HammingValidationErrors.EMPTY,
         errorPosition: "",
         correctCode: "",
         valid: false,
@@ -26,13 +32,13 @@ export const validateHamming = (binaryString: string, type: ParityType = ParityT
 
     // Check if the string has only 0s and 1s
     if (!/^[0-1]+$/.test(binaryString)) {
-        retVal.error = "Please enter a valid binary string consisting of 0s and 1s only.";
+        retVal.error = HammingValidationErrors.INVALID_BINARY_STRING;
         return retVal;
     }
 
     // Limit to 7 bit strings only
     if (binaryString.length !== 7) {
-        retVal.error = "This app currently only supports 7 bit binary strings.";
+        retVal.error = HammingValidationErrors.INVALID_LENGTH;
         return retVal;
     }
 
