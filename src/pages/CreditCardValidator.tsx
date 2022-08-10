@@ -11,6 +11,7 @@ import {
 } from "../lib/CreditCardValidator";
 
 import { VisaIcon, AmexIcon, MastercardIcon } from "../icons";
+import MessageBox from "../components/MessageBox";
 
 export const CreditCardValidator = () => {
   const [ccNo, setCcNo] = useState("");
@@ -71,16 +72,13 @@ export const CreditCardValidator = () => {
     <div className="relative flex flex-col justify-center h-full">
       <CreditCardIcon className="-z-0 absolute opacity-10 w-full pointer-events-none stroke-indigo-300 scale-75 -rotate-12 translate-x-80" />
       <PageHeading title="Credit Card Validator" />
-      {errorMessage && (
-        <div className="bg-red-200 p-4 text-red-900 text-md">
-          {errorMessage}
-        </div>
-      )}
+      {errorMessage && <MessageBox mode="error" message={errorMessage} />}
 
       {success && (
-        <div className="bg-green-200 p-4 text-green-900 text-md">
-          This credit card number is valid. - {issuer && issuer}
-        </div>
+        <MessageBox
+          mode="success"
+          message={`This credit card number is valid. - ${issuer && issuer}`}
+        />
       )}
       <div className="z-10 p-6 pb-24 w-2/3 mx-auto flex-1 flex flex-col justify-center">
         <label htmlFor="creditCardNo" className="block my-2">
