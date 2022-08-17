@@ -19,13 +19,13 @@ const routes = [
   },
   {
     title: "Hamming Code",
-    url: "/about",
+    url: "/hamming",
     icon: <PuzzleIcon className="w-6 inline-block mr-2" />,
     component: <HammingCode />,
   },
   {
     title: "Password Cracker",
-    url: "/home",
+    url: "/cracker",
     icon: <KeyIcon className="w-6 inline-block mr-2" />,
     component: <PasswordCracker />,
   },
