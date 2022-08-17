@@ -42,7 +42,7 @@ export const PasswordCracker = () => {
       {result?.success && (
         <MessageBox
           mode="success"
-          message={`Password was successfully cracked using ${result.attackMode} method in ${result.timeElapsed}`}
+          message={`Password (${result.test}) was successfully cracked using ${result.attackMode} method in ${result.timeElapsed}`}
         />
       )}
       {result && !result?.success && (
@@ -94,7 +94,7 @@ export const PasswordCracker = () => {
               onChange={onChange}
               value={pwd}
               id="password"
-              type="text"
+              type="password"
               className="relative text-base appearance-none rounded bg-white inner-shadow border border-gray-400 py-2 px-4 w-full"
             />
           </div>
