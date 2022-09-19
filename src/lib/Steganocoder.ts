@@ -97,6 +97,7 @@ export const decodeMessage = (message: string): string => {
 /**
  * RC4 Cipher
  * Symmetric key encryption algorithm
+ * Derived from: https://gist.github.com/mvcbox/be7a03358a48b345aeff8a501a46a806
  */
 export const rc4 = (key: string, str: string): string => {
     const state: number[] = [];
