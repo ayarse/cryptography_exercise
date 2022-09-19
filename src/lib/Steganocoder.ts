@@ -96,6 +96,7 @@ export const decodeMessage = (message: string): string => {
 
 /**
  * RC4 Cipher
+ * Symmetric key encryption algorithm
  */
 export const rc4 = (key: string, str: string): string => {
     const state: number[] = [];
@@ -108,22 +109,24 @@ export const rc4 = (key: string, str: string): string => {
         state[b] = temp;
     }
 
-    // fill the state array
+    // initialize the state array
     for (let i = 0; i < 256; i++) {
         state[i] = i;
     }
 
-    // shuffle the state array
+    // shuffle the state array using the key scheduling algorithm
     for (let i = 0, j = 0; i < 256; i++) {
         j = (j + state[i] + key.charCodeAt(i % key.length)) % 256;
         swap(i, j);
     }
 
-    // generate the keystream
+    // generate the keystream using pseudo-random generation algorithm
     for (let y = 0, i = 0, j = 0; y < str.length; y++) {
         i = (i + 1) % 256;
         j = (j + state[i]) % 256;
         swap(i, j);
+
+        // xor the keystream with the data string
         result += String.fromCharCode(str.charCodeAt(y) ^ state[(state[i] + state[j]) % 256]);
     }
 
