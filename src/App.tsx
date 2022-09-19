@@ -9,6 +9,7 @@ import PasswordCracker from "./pages/PasswordCracker";
 import { CreditCardValidator } from "./pages/CreditCardValidator";
 import { CreditCardIcon, KeyIcon, PuzzleIcon } from "@heroicons/react/outline";
 import HammingCode from "./pages/HammingCode";
+import Steganography from "./pages/Steganography";
 
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     url: "/cracker",
     icon: <KeyIcon className="w-6 inline-block mr-2" />,
     component: <PasswordCracker />,
+  },
+  {
+    title: "Steganography",
+    url: "/steganography",
+    icon: <KeyIcon className="w-6 inline-block mr-2" />,
+    component: <Steganography />,
   },
 ];
 
