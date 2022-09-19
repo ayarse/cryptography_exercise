@@ -93,3 +93,39 @@ export const decodeMessage = (message: string): string => {
 
     return zeroWidth2Text(secret);
 }
+
+/**
+ * RC4 Cipher
+ */
+export const rc4 = (key: string, str: string): string => {
+    const state: number[] = [];
+    let result = "";
+
+    // helper function to swap two values in an array
+    const swap = (a: number, b: number) => {
+        const temp = state[a];
+        state[a] = state[b];
+        state[b] = temp;
+    }
+
+    // fill the state array
+    for (let i = 0; i < 256; i++) {
+        state[i] = i;
+    }
+
+    // shuffle the state array
+    for (let i = 0, j = 0; i < 256; i++) {
+        j = (j + state[i] + key.charCodeAt(i % key.length)) % 256;
+        swap(i, j);
+    }
+
+    // generate the keystream
+    for (let y = 0, i = 0, j = 0; y < str.length; y++) {
+        i = (i + 1) % 256;
+        j = (j + state[i]) % 256;
+        swap(i, j);
+        result += String.fromCharCode(str.charCodeAt(y) ^ state[(state[i] + state[j]) % 256]);
+    }
+
+    return result;
+};

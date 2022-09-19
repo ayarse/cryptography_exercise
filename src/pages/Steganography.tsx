@@ -5,32 +5,61 @@
 import { SparklesIcon } from "@heroicons/react/outline";
 import React, { useRef, useState } from "react";
 import PageHeading from "../components/PageHeading";
-import { decodeMessage, encodeMessage } from "../lib/Steganocoder";
+import { decodeMessage, encodeMessage, rc4 } from "../lib/Steganocoder";
 
 const Steganography = () => {
-  const [{ hiddenMessage, publicMessage, encodedMessage }, setEncodingState] =
-    useState({
-      hiddenMessage: "",
-      publicMessage: "",
-      encodedMessage: "",
-    });
+  const [
+    { hiddenMessage, publicMessage, encodedMessage, encryptionKey },
+    setEncodingState,
+  ] = useState({
+    encryptionKey: "",
+    hiddenMessage: "",
+    publicMessage: "",
+    encodedMessage: "",
+  });
 
-  const [{ messageToDecode, decodedMessage }, setDecodingState] = useState({
+  const [
+    { messageToDecode, decodedMessage, decodedSecret, decryptionKey },
+    setDecodingState,
+  ] = useState({
+    decryptionKey: "",
     messageToDecode: "",
     decodedMessage: "",
+    decodedSecret: "",
   });
+
+  const updateStateValue = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    setStateFn: (arg: any) => void
+  ) => {
+    setStateFn((prev: Record<string, string>) => ({
+      ...prev,
+      [event.target.id]: event.target.value,
+    }));
+  };
+
+  const updateEncodingValue = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => updateStateValue(event, setEncodingState);
+  const updateDecodingValue = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => updateStateValue(event, setDecodingState);
 
   const encode = () => {
     setEncodingState((prev) => ({
       ...prev,
-      encodedMessage: encodeMessage(prev.hiddenMessage, prev.publicMessage),
+      encodedMessage: rc4(
+        encryptionKey,
+        encodeMessage(prev.hiddenMessage, prev.publicMessage)
+      ),
     }));
   };
 
   const decode = () => {
     setDecodingState((prev) => ({
       ...prev,
-      decodedMessage: decodeMessage(prev.messageToDecode),
+      decodedSecret: decodeMessage(rc4(decryptionKey, prev.messageToDecode)),
+      decodedMessage: rc4(decryptionKey, prev.messageToDecode),
     }));
   };
 
@@ -42,22 +71,28 @@ const Steganography = () => {
 
       <PageHeading title="Steganography" />
       <div className="flex flex-1 p-6 z-10">
-        <div className="grid grid-cols-2 gap-4 w-full">
+        <div className="grid grid-cols-2 gap-x-16 w-full">
           <div className="col-span-1">
             <h2 className="font-bold bg-indigo-400 text-white rounded-md p-4">
-              Encode
+              Encrypt
             </h2>
             <div>
+              <label htmlFor="encryptionkey" className="text-sm mt-4 block">
+                Encryption Key
+              </label>
+              <input
+                type="text"
+                className={textAreaClasses}
+                value={encryptionKey}
+                onChange={updateEncodingValue}
+                name="encryptionkey"
+                id="encryptionKey"
+              />
               <label htmlFor="hiddenMessage" className="text-sm mt-4 block">
                 Hidden Message
               </label>
               <textarea
-                onChange={(e) =>
-                  setEncodingState((prev) => ({
-                    ...prev,
-                    hiddenMessage: e.target.value,
-                  }))
-                }
+                onChange={updateEncodingValue}
                 value={hiddenMessage}
                 id="hiddenMessage"
                 name="hiddenMessage"
@@ -68,33 +103,29 @@ const Steganography = () => {
                 Public Message
               </label>
               <textarea
-                onChange={(e) =>
-                  setEncodingState((prev) => ({
-                    ...prev,
-                    publicMessage: e.target.value,
-                  }))
-                }
+                onChange={updateEncodingValue}
                 id="publicMessage"
                 name="publicMessage"
                 className={textAreaClasses}
                 placeholder="The message you want to be visible to the public"
+                value={publicMessage}
               />
               <div className="text-center">
                 <button
                   className="mx-auto mt-5 px-6 py-3 bg-indigo-500 hover:bg-indigo-800 transition-colors rounded-md text-white"
                   onClick={encode}
                 >
-                  Encode
+                  Encrypt
                 </button>
               </div>
               <label htmlFor="encodedMessage" className="text-sm mt-4 block">
-                Encoded Message
+                Encrypted Message
               </label>
               <textarea
                 id="encodedMessage"
                 name="encodedMessage"
                 className={textAreaClasses}
-                placeholder="The encoded message will appear here"
+                placeholder="The encrypted message will appear here"
                 readOnly
                 value={encodedMessage}
               />
@@ -102,44 +133,61 @@ const Steganography = () => {
           </div>
           <div className="col-span-1">
             <h2 className="font-bold bg-indigo-400 text-white rounded-md p-4">
-              Decode
+              Decrypt
             </h2>
             <div>
+              <label htmlFor="decryptionkey" className="text-sm mt-4 block">
+                Decryption Key
+              </label>
+              <input
+                type="text"
+                className={textAreaClasses}
+                name="decryptionKey"
+                id="decryptionKey"
+                value={decryptionKey}
+                onChange={updateDecodingValue}
+              />
               <label htmlFor="messageToDecode" className="text-sm mt-4 block">
-                Message to Decode
+                Message to Decrypt
               </label>
               <textarea
                 id="messageToDecode"
                 name="messageToDecode"
                 className={textAreaClasses}
-                placeholder="Enter an encoded message to decode"
-                onChange={(e) =>
-                  setDecodingState((prev) => ({
-                    ...prev,
-                    messageToDecode: e.target.value,
-                  }))
-                }
+                placeholder="Enter an encrypted ciphertext to decrypt"
+                onChange={updateDecodingValue}
                 value={messageToDecode}
-              />
-              <label htmlFor="decodedMessage" className="text-sm mt-4 block">
-                Decoded Message
-              </label>
-              <textarea
-                id="decodedMessage"
-                name="decodedMessage"
-                className={textAreaClasses}
-                placeholder="The decoded message will appear here"
-                readOnly
-                value={decodedMessage}
               />
               <div className="text-center">
                 <button
                   className="mx-auto mt-5 px-6 py-3 bg-indigo-500 hover:bg-indigo-800 transition-colors rounded-md text-white"
                   onClick={decode}
                 >
-                  Decode
+                  Decrypt
                 </button>
               </div>
+              <label htmlFor="decodedMessage" className="text-sm mt-4 block">
+                Decoded Public Message
+              </label>
+              <textarea
+                id="decodedMessage"
+                name="decodedMessage"
+                className={textAreaClasses}
+                placeholder="The decoded public message will appear here"
+                readOnly
+                value={decodedMessage}
+              />
+              <label htmlFor="decodedSecret" className="text-sm mt-4 block">
+                Decoded Hidden Message
+              </label>
+              <textarea
+                id="decodedSecret"
+                name="decodedSecret"
+                className={textAreaClasses}
+                placeholder="The decoded hidden message will appear here"
+                readOnly
+                value={decodedSecret}
+              />
             </div>
           </div>
         </div>
